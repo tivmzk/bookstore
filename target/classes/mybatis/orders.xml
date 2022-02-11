@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="orders">
+  	<select id="list" resultType="Orders">
+  		SELECT ord.id, ord.bookid, ord.cusid, cu.name AS cusname, bo.name AS bookname, cu.address
+		FROM orders ord, book bo, customer cu
+		WHERE ord.bookid = bo.id AND ord.cusid = cu.id
+  	</select>
+  	
+  	<select id="total" resultType="Integer">
+  		SELECT COUNT(*) FROM orders
+  	</select>
+  	
+  	<insert id="add">
+  		INSERT INTO orders
+  		VALUES (ORDERS_SEQ.NEXTVAL, #{bookid}, #{cusid})
+  	</insert>
+  	
+  	<select id="get" resultType="Orders">
+  		SELECT ord.id, ord.bookid, ord.cusid, bo.name, cu.address
+		FROM orders ord, book bo, customer cu
+		WHERE ord.id = #{id} AND ord.bookid = bo.id AND ord.cusid = cu.id
+  	</select>
+  	
+  	<update id="update">
+  		UPDATE orders
+  		SET 
+  		bookid = #{bookid},
+  		cusid = #{cusid}
+  		WHERE id = #{id}
+  	</update>
+  	
+  	<delete id="delete">
+  		DELETE FROM orders
+  		WHERE id = #{id}
+  	</delete>
+  </mapper>
